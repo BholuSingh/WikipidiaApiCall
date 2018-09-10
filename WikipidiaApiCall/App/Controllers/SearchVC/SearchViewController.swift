@@ -63,7 +63,10 @@ class SearchViewController: UIViewController {
             }else {
                 searchVM.searchTextInWikipidiaApiCall(searchText: searchString) { (boolValue) in
                     if boolValue {
-                        self.coreDataObj.saveData(searchVCViewM: self.searchVM)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                            self.coreDataObj.saveData(searchVCViewM: self.searchVM)
+                        })
+                        
                         self.tableView.reloadData()
                     }
                 }

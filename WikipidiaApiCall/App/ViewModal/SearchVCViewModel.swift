@@ -19,7 +19,10 @@ class SearchVCViewModel: NSObject {
     /// - Parameter index: index path
     /// - Returns: it returns the tittle
     func getTittle(index: Int)-> String {
-        return searchM.totallSearchData[index].tittle
+        if searchM.totallSearchData.count > index {
+            return searchM.totallSearchData[index].tittle
+        }
+        return ""
     }
     
     /// get discription of the Search Item
@@ -27,7 +30,10 @@ class SearchVCViewModel: NSObject {
     /// - Parameter index: index path
     /// - Returns: it returns The Discription String
     func getDiscription(index: Int)-> String {
-        return searchM.totallSearchData[index].discription
+        if searchM.totallSearchData.count > index {
+            return searchM.totallSearchData[index].discription
+        }
+        return ""
     }
     
     /// Get Image Url of the Index
@@ -35,7 +41,10 @@ class SearchVCViewModel: NSObject {
     /// - Parameter index: index Path
     /// - Returns: it returns the imageUrl String
     func getImageUrl(index: Int)-> String {
-        return searchM.totallSearchData[index].imageUrl
+        if searchM.totallSearchData.count > index {
+            return searchM.totallSearchData[index].imageUrl
+        }
+        return ""
     }
     
     /// Get main Url of the search Item
@@ -43,7 +52,10 @@ class SearchVCViewModel: NSObject {
     /// - Parameter index: Index path
     /// - Returns: it return the MainUrl
     func getmainUrl(index: Int)-> String {
-        return searchM.totallSearchData[index].pageUrl
+        if searchM.totallSearchData.count > index {
+            return searchM.totallSearchData[index].pageUrl
+        }
+        return ""
     }
     
     /// get the totall number of reponse itmes

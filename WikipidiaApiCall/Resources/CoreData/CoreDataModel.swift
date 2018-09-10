@@ -38,45 +38,48 @@ class CoreDataModel: NSObject {
         }
         fetchFromCoreData()
         var managedContext: NSManagedObjectContext!
-            managedContext =
-                appDelegate.persistentContainer.viewContext
-       
+        managedContext =
+            appDelegate.persistentContainer.viewContext
+        
         let entityData =
             NSEntityDescription.entity(forEntityName: "SearchData",
                                        in: managedContext)!
         
         let searchD = NSManagedObject(entity: entityData,
                                       insertInto: managedContext)
-        
-        for index in 0...(searchVCViewM.getTotallNumOfCells() - 1) {
-            if people.count > 1 {
-                if searchForParticularData(tittleS: searchVCViewM.getTittle(index: index)) {
+        if searchVCViewM.getTotallNumOfCells() > 0 {
+            for index in 0...(searchVCViewM.getTotallNumOfCells() - 1) {
+                if people.count > 1 {
+                    if searchForParticularData(tittleS: searchVCViewM.getTittle(index: index)) {
+                        if searchVCViewM.getTittle(index: index).count == 0 {
+                            break
+                        }
+                        searchD.setValue( searchVCViewM.getTittle(index: index) , forKeyPath: "tittle")
+                        searchD.setValue( searchVCViewM.getmainUrl(index: index) , forKeyPath: "mainUrl")
+                        searchD.setValue( searchVCViewM.getImageUrl(index: index) , forKeyPath: "imageUrl")
+                        searchD.setValue( searchVCViewM.getDiscription(index: index) , forKeyPath: "discription")
+                        do {
+                            try managedContext.save()
+                        } catch let error as NSError {
+                            print("Could not save. \(error), \(error.userInfo)")
+                        }
+                    }
+                }else {
                     searchD.setValue( searchVCViewM.getTittle(index: index) , forKeyPath: "tittle")
                     searchD.setValue( searchVCViewM.getmainUrl(index: index) , forKeyPath: "mainUrl")
                     searchD.setValue( searchVCViewM.getImageUrl(index: index) , forKeyPath: "imageUrl")
                     searchD.setValue( searchVCViewM.getDiscription(index: index) , forKeyPath: "discription")
                     do {
                         try managedContext.save()
+                        //                    people.append(searchD)
                     } catch let error as NSError {
                         print("Could not save. \(error), \(error.userInfo)")
                     }
                 }
-            }else {
-                searchD.setValue( searchVCViewM.getTittle(index: index) , forKeyPath: "tittle")
-                searchD.setValue( searchVCViewM.getmainUrl(index: index) , forKeyPath: "mainUrl")
-                searchD.setValue( searchVCViewM.getImageUrl(index: index) , forKeyPath: "imageUrl")
-                searchD.setValue( searchVCViewM.getDiscription(index: index) , forKeyPath: "discription")
-                do {
-                    try managedContext.save()
-                    //                    people.append(searchD)
-                } catch let error as NSError {
-                    print("Could not save. \(error), \(error.userInfo)")
-                }
             }
         }
-       
         
-      
+        
     }
     
     
@@ -115,9 +118,13 @@ extension CoreDataModel {
         var count = 0
         for index in 0...(people.count - 1) {
             count += 1
-            let serTittle = GenericUtility.strForObj(object: people[index].value(forKeyPath: "tittle")!)
-            if serTittle.lowercased() == tittleS.lowercased() {
-                return false
+            if people[index].value(forKeyPath: "tittle") != nil {
+                let serTittle = GenericUtility.strForObj(object: people[index].value(forKeyPath: "tittle")!)
+                if serTittle.lowercased() == tittleS.lowercased() {
+                    return false
+                }
+            }else {
+                continue
             }
         }
         return true
