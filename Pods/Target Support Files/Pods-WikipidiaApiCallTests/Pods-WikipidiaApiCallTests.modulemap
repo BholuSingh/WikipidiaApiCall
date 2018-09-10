@@ -1,0 +1,6 @@
+framework module Pods_WikipidiaApiCallTests {
+  umbrella header "Pods-WikipidiaApiCallTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
