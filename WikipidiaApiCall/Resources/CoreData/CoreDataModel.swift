@@ -147,9 +147,13 @@ extension CoreDataModel {
         var count = 0
         for index in 0...(people.count - 1) {
             count += 1
-            let serTittle = GenericUtility.strForObj(object: people[index].value(forKeyPath: "tittle")!)
-            if serTittle.lowercased().contains(searchtext.lowercased().replacingOccurrences(of: "+", with: " ")) {
-                searchData.append(people[index])
+            if people[index].value(forKeyPath: "tittle") != nil {
+                let serTittle = GenericUtility.strForObj(object: people[index].value(forKeyPath: "tittle")!)
+                if serTittle.lowercased().contains(searchtext.lowercased().replacingOccurrences(of: "+", with: " ")) {
+                    searchData.append(people[index])
+                }
+            }else {
+                continue
             }
             if people.count == count {
                 complitionHandler(true)
